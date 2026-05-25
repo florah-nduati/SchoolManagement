@@ -1,0 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+.explore-container {
+  padding: 20px;
+  font-family: "Josefin Sans", sans-serif;
+  background-color: var(--color-background);
+}
+
+.explore-container h2 {
+  text-align: center;
+  text-transform: capitalize;
+  font-size: 3.5rem;
+  color: var(--color-tersiary);
+  margin-bottom: 20px;
+}
+
+.explore-container p {
+  text-transform: capitalize;
+  font-size: 1.7rem;
+  text-align: center;
+  margin: 2rem;
+  margin: 1rem 0;
+  line-height: 1.6;
+  color: var(--color-blue);
+}
+
+.explore-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.recipe-preview h3 {
+  font-size: 1.5rem;
+  margin: 10px;
+  text-align: center;
+  color: var(--color-blue);
+}
+
+.recipe-preview p {
+  font-size: 1rem;
+  margin: 0 10px;
+  color: var(--color-black);
+  text-align: center;
+}
+
+.recipe-preview-button {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 15px;
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.recipe-preview-button:hover {
+  background-color: var(--color-header);
+}
+
+.filter {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.filters select:hover,
+.filters form button:hover {
+  background-color: var(--color-footer);
+}
+
+.like-btn,
+.bookmark-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: none;
+  border-radius: 50px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+.like-btn:hover,
+.bookmark-btn:hover {
+  background-color: var(--color-header);
+}
+
+.bookmark-btn.bookmarked {
+  background-color: var(--color-tersiary);
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  font-size: 16px;
+  color: red;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .explore-content {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

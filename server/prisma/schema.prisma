@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // cl
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// USER & AUTH
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  roleId    String
+  role      Role     @relation(fields: [roleId], references: [id])
+
+  student   Student?
+  teacher   Teacher?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ROLES & PERMISSIONS
+
+model Role {
+  id          String       @id @default(cuid())
+  name        String       @unique   // admin, teacher, student
+  users       User[]
+  permissions RolePermission[]
+
+  createdAt DateTime @default(now())
+}
+
+model Permission {
+  id    String @id @default(cuid())
+  name  String @unique  // create_grade, view_students, manage_users
+
+  roles RolePermission[]
+}
+
+model RolePermission {
+  id           String @id @default(cuid())
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@unique([roleId, permissionId], name: "roleId_permissionId")
+}
+
+// SCHOOL ENTITIES
+
+
+model Student {
+  id        String @id @default(cuid())
+  admission String @unique
+  userId    String @unique
+
+  user      User   @relation(fields: [userId], references: [id])
+
+  classId   String
+  class     Class  @relation(fields: [classId], references: [id])
+
+  grades    Grade[]
+}
+
+model Teacher {
+  id        String @id @default(cuid())
+  staffNo   String @unique
+  userId    String @unique
+
+  user      User   @relation(fields: [userId], references: [id])
+
+  subjects  Subject[]
+}
+
+model Class {
+  id       String @id @default(cuid())
+  name     String // e.g. "Grade 10A"
+
+  students Student[]
+  subjects Subject[]
+}
+
+model Subject {
+  id        String @id @default(cuid())
+  name      String
+
+  classId   String
+  class     Class @relation(fields: [classId], references: [id])
+
+  teacherId String?
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+
+  grades    Grade[]
+}
+
+model Grade {
+  id        String @id @default(cuid())
+  score     Int
+
+  studentId String
+  subjectId String
+
+  student   Student @relation(fields: [studentId], references: [id])
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  createdAt DateTime @default(now())
+}
