@@ -21,8 +21,8 @@ Sensitive values should be stored in `.env` files only, not committed to source 
 Example `server/.env` values:
 
 ```env
-DATABASE_URL=postgresql://postgres:password@db:5432/school_db
-JWT_SECRET=your-very-secret-key
+DATABASE_URL=postgresql://postgres:<DB_PASSWORD>@db:5432/school_db
+JWT_SECRET=<YOUR_SECRET_KEY>
 PORT=5000
 ```
 
@@ -45,7 +45,7 @@ This will start:
 If you run the server locally instead of Docker, update `server/.env` to use your host database connection, for example:
 
 ```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/school_db
+DATABASE_URL=postgresql://postgres:<DB_PASSWORD>@localhost:5432/school_db
 ```
 
 Then start the server and client separately.
