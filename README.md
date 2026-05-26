@@ -128,7 +128,7 @@ Then start the server and client separately.
 - The client uses `VITE_API_BASE_URL` to call the backend.
 - `docker compose up --build` builds and starts all services together.
 
-## How to explain this to someone else
+## explained flow
 
 1. The user opens the UI in the browser and chooses login or register.
 2. The UI calls a backend API endpoint with email and password.
