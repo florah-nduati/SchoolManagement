@@ -131,13 +131,121 @@ Then start the server and client separately.
 ## How to explain this to someone else
 
 1. The user opens the UI in the browser and chooses login or register.
-2. The UI calls a backend API endpoint with email/password.
+2. The UI calls a backend API endpoint with email and password.
 3. The backend checks the credentials and creates a JWT.
 4. The UI stores the JWT and sends it with future requests.
 5. The backend confirms the JWT is valid and extracts the user role.
 6. For protected actions, the backend also checks whether the user’s role includes the required permission.
 7. The database stores users, roles, permissions, and role-permission links.
 8. Docker ties the client, server, and database together so the whole app runs with one command.
+
+### Request/response examples
+
+#### Register
+
+Request:
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "email": "jane@example.com",
+  "password": "secret123",
+  "roleId": "<role-id>"
+}
+```
+
+Response:
+```json
+{
+  "user": {
+    "id": "...",
+    "email": "jane@example.com",
+    "roleId": "..."
+  },
+  "token": "<jwt-token>"
+}
+```
+
+#### Login
+
+Request:
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "jane@example.com",
+  "password": "secret123"
+}
+```
+
+Response:
+```json
+{
+  "user": {
+    "id": "...",
+    "email": "jane@example.com",
+    "roleId": "..."
+  },
+  "token": "<jwt-token>"
+}
+```
+
+#### Protected call
+
+Request:
+```http
+GET /api/auth/users
+Authorization: Bearer <jwt-token>
+```
+
+Response (if authorized):
+```json
+{
+  "message": "Access granted: manage users",
+  "users": [
+    {"id":"...","email":"...","role":{"name":"admin"}}
+  ]
+}
+```
+
+Response (if unauthorized):
+```json
+{
+  "message": "Forbidden"
+}
+```
+
+### Authentication / Authorization flow
+
+```text
+Browser UI
+   |
+   | POST /api/auth/login or /register
+   v
+Backend Express API
+   | 1) validate input
+   | 2) verify / create user
+   | 3) sign JWT with JWT_SECRET
+   v
+JWT token returned
+   |
+   | stored in localStorage
+   v
+Browser UI
+   | Authorization: Bearer <token>
+   v
+Backend auth middleware
+   | verify token
+   | attach req.user to request
+   v
+RBAC middleware
+   | load permissions for req.user.roleId
+   | compare against required permission
+   v
+Protected route either returns data or 403
+```
 
 ## Notes
 
