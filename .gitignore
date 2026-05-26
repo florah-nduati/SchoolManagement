@@ -19,19 +19,8 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
-Thumbs.db
-desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# Cache and build artifacts
-.cache/
-coverage/
-build/
-out/
-
-# Local env files
-*.env.local
